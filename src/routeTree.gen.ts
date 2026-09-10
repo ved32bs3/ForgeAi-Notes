@@ -18,6 +18,7 @@ import { Route as DashRecommendRouteImport } from './routes/_dash/recommend'
 import { Route as DashReposRouteImport } from './routes/_dash/repos'
 import { Route as DashSettingsRouteImport } from './routes/_dash/settings'
 import { Route as DashTracesRouteImport } from './routes/_dash/traces'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -63,6 +64,11 @@ const DashTracesRoute = DashTracesRouteImport.update({
   path: '/traces',
   getParentRoute: () => DashRoute,
 } as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/repos': typeof DashReposRoute
   '/settings': typeof DashSettingsRoute
   '/traces': typeof DashTracesRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/repos': typeof DashReposRoute
   '/settings': typeof DashSettingsRoute
   '/traces': typeof DashTracesRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/_dash/repos': typeof DashReposRoute
   '/_dash/settings': typeof DashSettingsRoute
   '/_dash/traces': typeof DashTracesRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/repos'
     | '/settings'
     | '/traces'
+    | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/repos'
     | '/settings'
     | '/traces'
+    | '/api/auth/$'
   id:
     | '__root__'
     | '/'
@@ -128,11 +139,13 @@ export interface FileRouteTypes {
     | '/_dash/repos'
     | '/_dash/settings'
     | '/_dash/traces'
+    | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashRoute: typeof DashRouteWithChildren
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -200,6 +213,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashTracesRouteImport
       parentRoute: typeof DashRoute
     }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -228,6 +248,7 @@ const DashRouteWithChildren = DashRoute._addFileChildren(DashRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashRoute: DashRouteWithChildren,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

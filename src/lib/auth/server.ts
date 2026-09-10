@@ -178,7 +178,13 @@ export const auth = betterAuth({
   // globalThis so HMR doesn't invalidate PGLite-backed sessions (see above).
   secret: env("BETTER_AUTH_SECRET") ?? previewAuthSecret(),
   database,
-
+  socialProviders: {
+    github: {
+     clientId: env("GITHUB_CLIENT_ID") ?? "",
+clientSecret: env("GITHUB_CLIENT_SECRET") ?? "",
+      scope: ["user:email"],
+    },
+  },
   // CSRF / origin check for credentialed auth POSTs (email sign-up/sign-in, …).
   // See `trustedOrigins` construction above — must cover live preview hosts AND
   // local loopback variants, or clients get "Invalid origin".
